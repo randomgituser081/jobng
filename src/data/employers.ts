@@ -4,7 +4,7 @@ export const employers: Employer[] = [
   {
     id: "1",
     name: "Creative Studio",
-    logo: "https://ui-avatars.com/api/?name=Creative+Studio&background=1967D2&color=fff&size=100",
+    logo: "https://ui-avatars.com/api/?name=Creative+Studio&background=F5A623&color=fff&size=100",
     coverImage: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&auto=format",
     industry: "Design & Creative",
     location: "New York, NY",
@@ -100,7 +100,7 @@ export const employers: Employer[] = [
   {
     id: "6",
     name: "TechVision Labs",
-    logo: "https://ui-avatars.com/api/?name=TechVision&background=1967D2&color=fff&size=100",
+    logo: "https://ui-avatars.com/api/?name=TechVision&background=F5A623&color=fff&size=100",
     coverImage: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=800&auto=format",
     industry: "Technology",
     location: "Remote",

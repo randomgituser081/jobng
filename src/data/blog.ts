@@ -84,7 +84,7 @@ export const blogPosts: BlogPost[] = [
     `,
     image: "https://images.unsplash.com/photo-1521898284481-a5ec348cb555?w=800&auto=format",
     author: "Ashley Jenkins",
-    authorAvatar: "https://ui-avatars.com/api/?name=Ashley+Jenkins&background=1967D2&color=fff&size=80",
+    authorAvatar: "https://ui-avatars.com/api/?name=Ashley+Jenkins&background=F5A623&color=fff&size=80",
     date: "April 15, 2024",
     category: "Remote Work",
     tags: ["Remote", "Productivity", "Work From Home"],

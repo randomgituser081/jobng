@@ -38,7 +38,7 @@ export default function Navbar() {
         className={`jj-nav ${transparent ? "jj-nav--transparent" : "jj-nav--solid"}`}
       >
         <div className="container-xl jj-nav__inner">
-          <Logo variant={transparent ? "light" : "dark"} size="md" />
+          <Logo variant="dark" size="md" />
 
           <nav className="jj-nav__links">
             {navLinks.map((link) => (
@@ -107,21 +107,21 @@ export default function Navbar() {
           color: var(--text-muted); transition: color 0.2s, background 0.2s;
         }
         .jj-nav__link:hover { color: var(--ink); background: rgba(10,15,28,0.04); }
-        .jj-nav__link--on-dark { color: rgba(255,255,255,0.65); }
-        .jj-nav__link--on-dark:hover { color: #fff; background: rgba(255,255,255,0.08); }
+        .jj-nav__link--on-dark { color: rgba(10,15,28,0.7); }
+        .jj-nav__link--on-dark:hover { color: #0A0F1C; background: rgba(10,15,28,0.06); }
         .jj-nav__link--active { color: var(--gold-hover) !important; }
-        .jj-nav__link--on-dark.jj-nav__link--active { color: var(--gold-light) !important; }
+        .jj-nav__link--on-dark.jj-nav__link--active { color: #78350F !important; }
         .jj-nav__actions { display: none; align-items: center; gap: 10px; }
         .jj-nav__phone { font-size: 0.8125rem; color: var(--text-muted); font-weight: 600; }
-        .jj-nav__phone--on-dark { color: rgba(255,255,255,0.6); }
+        .jj-nav__phone--on-dark { color: rgba(10,15,28,0.6); }
         .jj-nav__logout { padding: 8px 16px; font-size: 0.8125rem; }
-        .jj-nav__logout--on-dark { color: #fff; border-color: rgba(255,255,255,0.25); }
+        .jj-nav__logout--on-dark { color: #0A0F1C; border-color: rgba(10,15,28,0.25); }
         .jj-nav__login { padding: 9px 20px; }
         .jj-nav__burger {
           background: none; border: none; cursor: pointer;
           padding: 8px; border-radius: 8px; color: var(--ink);
         }
-        .jj-nav__burger--on-dark { color: #fff; }
+        .jj-nav__burger--on-dark { color: #0A0F1C; }
         @media (min-width: 1024px) {
           .jj-nav__links { display: flex; }
           .jj-nav__actions { display: flex; }

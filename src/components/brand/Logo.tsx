@@ -8,6 +8,8 @@ interface LogoProps {
   size?: "sm" | "md" | "lg";
   href?: string;
   className?: string;
+  /** Disable motion for reduced-motion preferences or static contexts */
+  animated?: boolean;
 }
 
 const sizes = {
@@ -16,29 +18,37 @@ const sizes = {
   lg: { mark: 44, text: 24, gap: 12 },
 };
 
-function LogoMark({ size }: { size: number }) {
+function LogoMark({ size, animated = true }: { size: number; animated?: boolean }) {
+  const gradId = `logoGrad-${size}`;
+
   return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 44 44"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      aria-hidden
-    >
-      <rect width="44" height="44" rx="12" fill="#0A0F1C" />
-      <path
-        d="M22 10L30 20H25.5V32H18.5V20H14L22 10Z"
-        fill="url(#logoGrad)"
-      />
-      <circle cx="22" cy="36" r="2.5" fill="#F5A623" />
-      <defs>
-        <linearGradient id="logoGrad" x1="14" y1="10" x2="30" y2="32" gradientUnits="userSpaceOnUse">
-          <stop stopColor="#FFD166" />
-          <stop offset="1" stopColor="#F5A623" />
-        </linearGradient>
-      </defs>
-    </svg>
+    <span className={`jj-logo-mark${animated ? " jj-logo-mark--animated" : ""}`} style={{ width: size, height: size }}>
+      <span className="jj-logo-mark__glow" aria-hidden />
+      <span className="jj-logo-mark__ring" aria-hidden />
+      <svg
+        className="jj-logo-mark__svg"
+        width={size}
+        height={size}
+        viewBox="0 0 44 44"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-hidden
+      >
+        <rect width="44" height="44" rx="12" fill="#0A0F1C" />
+        <path
+          className="jj-logo-mark__arrow"
+          d="M22 10L30 20H25.5V32H18.5V20H14L22 10Z"
+          fill={`url(#${gradId})`}
+        />
+        <circle className="jj-logo-mark__dot" cx="22" cy="36" r="2.5" fill="#F5A623" />
+        <defs>
+          <linearGradient id={gradId} x1="14" y1="10" x2="30" y2="32" gradientUnits="userSpaceOnUse">
+            <stop stopColor="#FFD166" />
+            <stop offset="1" stopColor="#F5A623" />
+          </linearGradient>
+        </defs>
+      </svg>
+    </span>
   );
 }
 
@@ -48,6 +58,7 @@ export default function Logo({
   size = "md",
   href = "/",
   className = "",
+  animated = true,
 }: LogoProps) {
   const s = sizes[size];
   const textColor = variant === "light" ? "#FFFFFF" : "#0A0F1C";
@@ -58,7 +69,7 @@ export default function Logo({
       className={`logo-wrap ${className}`}
       style={{ display: "inline-flex", alignItems: "center", gap: s.gap, textDecoration: "none" }}
     >
-      <LogoMark size={s.mark} />
+      <LogoMark size={s.mark} animated={animated} />
       {showText && (
         <span style={{ display: "flex", alignItems: "baseline", gap: 1, lineHeight: 1 }}>
           <span
@@ -73,6 +84,7 @@ export default function Logo({
             JustJob
           </span>
           <span
+            className={animated ? "jj-logo-ng" : undefined}
             style={{
               fontSize: s.text,
               fontWeight: 800,

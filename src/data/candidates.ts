@@ -4,7 +4,7 @@ export const candidates: Candidate[] = [
   {
     id: "1",
     name: "Ashley Jenkins",
-    avatar: "https://ui-avatars.com/api/?name=Ashley+Jenkins&background=1967D2&color=fff&size=200",
+    avatar: "https://ui-avatars.com/api/?name=Ashley+Jenkins&background=F5A623&color=fff&size=200",
     title: "Senior UI/UX Designer",
     location: "New York, NY",
     experience: "5 Years",
@@ -102,7 +102,7 @@ export const candidates: Candidate[] = [
   {
     id: "6",
     name: "Jane Cooper",
-    avatar: "https://ui-avatars.com/api/?name=Jane+Cooper&background=1967D2&color=fff&size=200",
+    avatar: "https://ui-avatars.com/api/?name=Jane+Cooper&background=F5A623&color=fff&size=200",
     title: "Registered Nurse",
     location: "New York, NY",
     experience: "7 Years",
@@ -199,7 +199,7 @@ export const candidates: Candidate[] = [
   {
     id: "11",
     name: "David Brown",
-    avatar: "https://ui-avatars.com/api/?name=David+Brown&background=1967D2&color=fff&size=200",
+    avatar: "https://ui-avatars.com/api/?name=David+Brown&background=F5A623&color=fff&size=200",
     title: "Automotive Technician",
     location: "Miami, FL",
     experience: "6 Years",

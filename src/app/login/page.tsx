@@ -174,7 +174,7 @@ function LoginPageContent() {
         <div className="jj-login-panel jj-login-panel--brand">
           <div className="jj-login-panel__grid" aria-hidden />
           <div className="jj-login-panel__content">
-            <Logo variant="light" size="lg" href="/" />
+            <Logo variant="dark" size="lg" href="/" />
             <h1 className="jj-login-panel__title">
               Find your next role<br />
               <span>in Nigeria.</span>

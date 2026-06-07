@@ -102,7 +102,9 @@ export default function HeroSection() {
 
       <style>{`
         .jj-hero {
-          background: var(--ink);
+          background:
+            radial-gradient(ellipse 90% 70% at 50% -10%, #FFE7A8 0%, transparent 60%),
+            linear-gradient(160deg, #FFD166 0%, #F5A623 52%, #E8920F 100%);
           min-height: 92vh;
           display: flex;
           flex-direction: column;
@@ -115,8 +117,8 @@ export default function HeroSection() {
         .jj-hero__grid {
           position: absolute; inset: 0;
           background-image:
-            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            linear-gradient(rgba(10,15,28,0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(10,15,28,0.05) 1px, transparent 1px);
           background-size: 48px 48px;
           mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, black 20%, transparent 100%);
         }
@@ -125,11 +127,11 @@ export default function HeroSection() {
         }
         .jj-hero__orb--gold {
           top: 10%; right: 5%; width: 420px; height: 420px;
-          background: rgba(245, 166, 35, 0.18);
+          background: rgba(255, 248, 225, 0.55);
         }
         .jj-hero__orb--teal {
           bottom: 20%; left: 0; width: 360px; height: 360px;
-          background: rgba(45, 212, 191, 0.1);
+          background: rgba(255, 255, 255, 0.25);
         }
         .jj-hero__content {
           text-align: center;
@@ -139,38 +141,38 @@ export default function HeroSection() {
         }
         .jj-hero__badge {
           display: inline-flex; align-items: center; gap: 8px;
-          background: rgba(255,255,255,0.06);
-          border: 1px solid rgba(255,255,255,0.12);
+          background: rgba(10,15,28,0.08);
+          border: 1px solid rgba(10,15,28,0.14);
           border-radius: 999px; padding: 6px 16px;
           font-size: 0.8125rem; font-weight: 600;
-          color: rgba(255,255,255,0.7); margin-bottom: 1.75rem;
+          color: rgba(10,15,28,0.72); margin-bottom: 1.75rem;
         }
         .jj-hero__badge-dot {
           width: 7px; height: 7px; border-radius: 50%;
-          background: var(--teal); display: inline-block;
+          background: #0F9D58; display: inline-block;
+          box-shadow: 0 0 0 3px rgba(15,157,88,0.2);
         }
         .jj-hero__title {
           font-size: clamp(2.5rem, 6vw, 4rem);
-          font-weight: 800; color: #fff;
+          font-weight: 800; color: #0A0F1C;
           line-height: 1.1; margin: 0 0 1.25rem;
           letter-spacing: -0.03em;
         }
         .jj-hero__title-accent {
-          background: linear-gradient(135deg, var(--gold-light), var(--gold));
-          -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-          background-clip: text;
+          color: #fff;
+          text-shadow: 0 2px 20px rgba(120,53,15,0.25);
         }
         .jj-hero__sub {
-          font-size: 1.0625rem; color: rgba(255,255,255,0.55);
+          font-size: 1.0625rem; color: rgba(10,15,28,0.72);
           max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.65;
         }
-        .jj-hero__sub strong { color: var(--gold-light); font-weight: 700; }
+        .jj-hero__sub strong { color: #78350F; font-weight: 800; }
         .jj-hero__search {
           display: flex; align-items: center; gap: 10px;
-          background: rgba(255,255,255,0.97);
+          background: #fff;
           border-radius: var(--radius-md);
           padding: 8px 8px 8px 18px;
-          box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+          box-shadow: 0 24px 70px rgba(120,53,15,0.28);
           max-width: 580px; margin: 0 auto 1.5rem;
         }
         .jj-hero__search-input {
@@ -183,28 +185,28 @@ export default function HeroSection() {
           display: flex; flex-wrap: wrap; align-items: center;
           justify-content: center; gap: 8px; margin-bottom: 3rem;
         }
-        .jj-hero__tags-label { font-size: 0.8125rem; color: rgba(255,255,255,0.35); }
+        .jj-hero__tags-label { font-size: 0.8125rem; color: rgba(10,15,28,0.5); }
         .jj-hero__tag {
-          background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-          color: rgba(255,255,255,0.65); border-radius: 999px;
+          background: rgba(255,255,255,0.55); border: 1px solid rgba(10,15,28,0.12);
+          color: rgba(10,15,28,0.75); border-radius: 999px;
           padding: 5px 14px; font-size: 0.8125rem; font-weight: 600;
           cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;
         }
         .jj-hero__tag:hover {
-          background: rgba(245,166,35,0.15); border-color: rgba(245,166,35,0.3);
-          color: var(--gold-light);
+          background: #0A0F1C; border-color: #0A0F1C;
+          color: #FFD166;
         }
         .jj-hero__stats {
           display: flex; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
-          border-top: 1px solid rgba(255,255,255,0.08);
+          border-top: 1px solid rgba(10,15,28,0.14);
           padding-top: 2rem;
         }
         .jj-hero__stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .jj-hero__stat-value {
           font-family: var(--font-display), sans-serif;
-          font-size: 1.375rem; font-weight: 800; color: var(--gold-light);
+          font-size: 1.375rem; font-weight: 800; color: #78350F;
         }
-        .jj-hero__stat-label { font-size: 0.75rem; color: rgba(255,255,255,0.4); font-weight: 500; }
+        .jj-hero__stat-label { font-size: 0.75rem; color: rgba(10,15,28,0.55); font-weight: 500; }
         .jj-hero__wave { position: absolute; bottom: 0; left: 0; right: 0; line-height: 0; }
         @media (max-width: 640px) {
           .jj-hero__search { flex-wrap: wrap; padding: 12px; }

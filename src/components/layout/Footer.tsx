@@ -29,7 +29,7 @@ export default function Footer() {
       <div className="container-xl jj-footer__main">
         <div className="jj-footer__grid">
           <div>
-            <Logo variant="light" size="md" />
+            <Logo variant="dark" size="md" />
             <p className="jj-footer__tagline">
               Nigeria&apos;s job discovery platform. Subscribe via <strong>*7098#</strong>, browse live listings, and land your next role.
             </p>
@@ -62,7 +62,12 @@ export default function Footer() {
       </div>
 
       <style>{`
-        .jj-footer { background: var(--ink); color: rgba(255,255,255,0.5); }
+        .jj-footer {
+          background:
+            radial-gradient(ellipse 80% 80% at 80% 0%, #FFE7A8 0%, transparent 55%),
+            linear-gradient(200deg, #FFD166 0%, #F5A623 55%, #E8920F 100%);
+          color: rgba(10,15,28,0.7);
+        }
         .jj-footer__main { padding: 4rem 0 3rem; }
         .jj-footer__grid {
           display: grid; gap: 2.5rem;
@@ -72,33 +77,33 @@ export default function Footer() {
         @media (min-width: 1024px) { .jj-footer__grid { grid-template-columns: 2fr 1fr 1fr; } }
         .jj-footer__tagline {
           font-size: 0.875rem; line-height: 1.7; max-width: 300px;
-          margin: 1.25rem 0 0; color: rgba(255,255,255,0.4);
+          margin: 1.25rem 0 0; color: rgba(10,15,28,0.65);
         }
-        .jj-footer__tagline strong { color: var(--gold-light); }
+        .jj-footer__tagline strong { color: #78350F; font-weight: 800; }
         .jj-footer__heading {
           font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
-          letter-spacing: 0.12em; color: rgba(255,255,255,0.85);
+          letter-spacing: 0.12em; color: #0A0F1C;
           margin: 0 0 1.25rem;
         }
         .jj-footer__link {
-          display: block; font-size: 0.875rem; color: rgba(255,255,255,0.45);
+          display: block; font-size: 0.875rem; color: rgba(10,15,28,0.6);
           text-decoration: none; padding: 5px 0; transition: color 0.15s;
         }
-        .jj-footer__link:hover { color: var(--gold-light); }
-        .jj-footer__bar { border-top: 1px solid rgba(255,255,255,0.08); }
+        .jj-footer__link:hover { color: #0A0F1C; }
+        .jj-footer__bar { border-top: 1px solid rgba(10,15,28,0.12); }
         .jj-footer__bar-inner {
           display: flex; flex-wrap: wrap; align-items: center;
           justify-content: space-between; gap: 12px; padding: 1.25rem 0;
         }
-        .jj-footer__copy { font-size: 0.8125rem; color: rgba(255,255,255,0.3); margin: 0; }
+        .jj-footer__copy { font-size: 0.8125rem; color: rgba(10,15,28,0.55); margin: 0; }
         .jj-footer__socials { display: flex; gap: 8px; }
         .jj-footer__social {
           width: 34px; height: 34px; border-radius: 50%;
           display: flex; align-items: center; justify-content: center;
-          background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4);
+          background: rgba(10,15,28,0.08); color: rgba(10,15,28,0.6);
           text-decoration: none; transition: background 0.2s, color 0.2s;
         }
-        .jj-footer__social:hover { background: var(--gold-muted); color: var(--gold-light); }
+        .jj-footer__social:hover { background: #0A0F1C; color: #FFD166; }
       `}</style>
     </footer>
   );

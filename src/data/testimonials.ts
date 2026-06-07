@@ -4,7 +4,7 @@ export const testimonials: Testimonial[] = [
   {
     id: "1",
     name: "Ashley Jenkins",
-    avatar: "https://ui-avatars.com/api/?name=Ashley+Jenkins&background=1967D2&color=fff&size=80",
+    avatar: "https://ui-avatars.com/api/?name=Ashley+Jenkins&background=F5A623&color=fff&size=80",
     role: "Designer",
     company: "Creative Studio",
     content: "JustJobNG helped me find my dream job within two weeks of signing up. The search filters are incredibly powerful and the application process is seamless. I highly recommend this platform to anyone looking for design roles.",
@@ -54,7 +54,7 @@ export const testimonials: Testimonial[] = [
   {
     id: "6",
     name: "Jane Cooper",
-    avatar: "https://ui-avatars.com/api/?name=Jane+Cooper&background=1967D2&color=fff&size=80",
+    avatar: "https://ui-avatars.com/api/?name=Jane+Cooper&background=F5A623&color=fff&size=80",
     role: "Registered Nurse",
     company: "CityHealth Medical Center",
     content: "Finding healthcare jobs can be challenging, but JustJobNG has an excellent selection of medical and nursing positions. The resume builder tool helped me present my experience more professionally.",
