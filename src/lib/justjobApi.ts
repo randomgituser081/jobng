@@ -21,7 +21,11 @@ export interface ApiResult<T = Record<string, unknown>> {
   status: number;
   data: T;
 }
-
+export interface UpdateApiResult {
+  ok: boolean;
+  status: number;
+  message: string;
+}
 export function extractError(
   data: Record<string, unknown>,
   fallback = "Something went wrong. Please try again."
@@ -75,6 +79,36 @@ export async function forgotPassword(body: {
     body: JSON.stringify(body),
   });
   return { ok: res.ok, status: res.status, data: await parseJson(res) };
+}
+
+export async function updatePassword({
+  number,
+  pin,
+  confirm_pin,
+}: {
+  number: string;
+  pin: string;
+  confirm_pin: string;
+}): Promise<UpdateApiResult> {
+  const res = await fetch(`${API_BASE_URL}/api/justjob/update/password/`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      number,
+      pin,
+      confirm_pin,
+    }),
+  });
+
+  const data = await parseJson(res);
+  
+  return { 
+    ok: res.ok, 
+    status: res.status, 
+    message: data.message as string
+  };
 }
 
 export async function resetPassword(body: {

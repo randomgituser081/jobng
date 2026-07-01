@@ -1,11 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { FiBriefcase, FiCheckCircle, FiPhone, FiLock, FiArrowLeft } from "react-icons/fi";
+import { FiBriefcase, FiCheckCircle, FiPhone, FiArrowLeft } from "react-icons/fi";
 import { normalizeNigerianPhone } from "@/lib/phone";
 
+// --- 6-Digit OTP Input Component ---
+function OtpInput({ value, onChange }: { value: string; onChange: (val: string) => void }) {
+  const inputs = useRef<(HTMLInputElement | null)[]>([]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+    const val = e.target.value;
+    if (/[^0-9]/.test(val)) return; // Only allow numbers
+
+    const newPin = value.split("");
+    newPin[index] = val;
+    const finalPin = newPin.join("").slice(0, 6);
+    onChange(finalPin);
+
+    // Auto-focus next input
+    if (val && index < 5) {
+      inputs.current[index + 1]?.focus();
+    }
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, index: number) => {
+    if (e.key === "Backspace" && !value[index] && index > 0) {
+      // If backspace is pressed on an empty box, jump to the previous box
+      inputs.current[index - 1]?.focus();
+    }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pastedData = e.clipboardData.getData("text").replace(/\D/g, "").slice(0, 6);
+    if (pastedData) {
+      onChange(pastedData);
+      // Focus the next empty input, or the last one if full
+      const focusIndex = Math.min(pastedData.length, 5);
+      inputs.current[focusIndex]?.focus();
+    }
+  };
+
+  return (
+    <div className="flex items-center justify-between gap-2" onPaste={handlePaste}>
+      {Array.from({ length: 6 }).map((_, i) => (
+        <input
+          title="otp code"
+          key={i}
+          ref={(el) => { inputs.current[i] = el; }}
+          type="text"
+          inputMode="numeric"
+          maxLength={1}
+          value={value[i] || ""}
+          onChange={(e) => handleChange(e, i)}
+          onKeyDown={(e) => handleKeyDown(e, i)}
+          className="w-12 h-12 flex-1 text-center text-xl tracking-widest font-bold text-gray-900 bg-transparent border-[1.5px] border-slate-200 rounded-xl outline-none focus:border-[#00863F] focus:ring-1 focus:ring-[#00863F] transition-all"
+        />
+      ))}
+    </div>
+  );
+}
+
+// --- Main Page Component ---
 type Step = "request" | "verify";
 
 export default function ForgotPasswordPage() {
@@ -51,10 +109,13 @@ export default function ForgotPasswordPage() {
     e.preventDefault();
     setError("");
     const normalized = normalizeNigerianPhone(phone);
-    if (!/^\d{4,6}$/.test(pin)) {
-      setError("Enter the 4–6 digit code from SMS.");
+    
+    // Updated to strictly enforce 6 digits
+    if (!/^\d{6}$/.test(pin)) {
+      setError("Enter the 6-digit code from SMS.");
       return;
     }
+    
     setLoading(true);
     try {
       const res = await fetch("/api/auth/reset-password", {
@@ -76,119 +137,116 @@ export default function ForgotPasswordPage() {
     }
   }
 
+  // Success State UI
   if (success) {
     return (
-      <div style={{ minHeight: "100vh", background: "#f8fafc", paddingTop: 80, display: "flex", alignItems: "center", justifyContent: "center", padding: "80px 16px" }}>
-        <div style={{ background: "#fff", borderRadius: 20, border: "1.5px solid #e5e7eb", padding: 48, maxWidth: 400, width: "100%", textAlign: "center" }}>
-          <div style={{ width: 64, height: 64, background: "#f0fdf4", borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px" }}>
-            <FiCheckCircle style={{ color: "#16a34a", fontSize: 30 }} />
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4 pt-20">
+        <div className="bg-white rounded-[20px] border-[1.5px] border-gray-200 p-12 max-w-100 w-full text-center">
+          <div className="w-16 h-16 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-5">
+            <FiCheckCircle className="text-green-600 text-3xl" />
           </div>
-          <h2 style={{ fontSize: 20, fontWeight: 800, color: "#111827", marginBottom: 8 }}>PIN reset!</h2>
-          <p style={{ fontSize: 14, color: "#6b7280" }}>Redirecting you to sign in…</p>
+          <h2 className="text-xl font-extrabold text-gray-900 mb-2">PIN reset!</h2>
+          <p className="text-sm text-gray-500">Redirecting you to sign in…</p>
         </div>
       </div>
     );
   }
 
-  const inputLabel: React.CSSProperties = { display: "block", fontSize: 13, fontWeight: 600, color: "#374151", marginBottom: 6 };
-
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", padding: "96px 16px 48px" }}>
-      <div style={{ width: "100%", maxWidth: 440 }}>
-        <div style={{ textAlign: "center", marginBottom: 28 }}>
-          <Link href="/" style={{ display: "inline-flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
-            <div style={{ width: 40, height: 40, background: "#00863F", borderRadius: 10, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <FiBriefcase style={{ color: "#fff", fontSize: 20 }} />
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center px-4 pt-24 pb-12">
+      <div className="w-full max-w-110">
+        {/* Header Logo */}
+        <div className="text-center mb-7">
+          <Link href="/" className="inline-flex items-center gap-2.5 no-underline">
+            <div className="w-10 h-10 bg-[#00863F] rounded-lg flex items-center justify-center">
+              <FiBriefcase className="text-white text-xl" />
             </div>
-            <span style={{ fontSize: 22, fontWeight: 800, color: "#111827" }}>JustJobNG</span>
+            <span className="text-[22px] font-extrabold text-gray-900">JustJobNG</span>
           </Link>
         </div>
 
-        <div style={{ background: "#fff", borderRadius: 20, border: "1.5px solid #e5e7eb", padding: 28, boxShadow: "0 4px 24px rgba(0,0,0,0.06)" }}>
-          <h2 style={{ fontSize: 20, fontWeight: 800, color: "#111827", marginBottom: 4 }}>
+        {/* Main Card */}
+        <div className="bg-white rounded-[20px] border-[1.5px] border-gray-200 p-7 shadow-[0_4px_24px_rgba(0,0,0,0.06)]">
+          <h2 className="text-xl font-extrabold text-gray-900 mb-1">
             {step === "request" ? "Forgot your PIN?" : "Enter reset code"}
           </h2>
-          <p style={{ fontSize: 13, color: "#9ca3af", marginBottom: 24 }}>
+          <p className="text-[13px] text-gray-400 mb-6">
             {step === "request"
               ? "We'll text a reset code to your phone number."
               : `Code sent to ${normalizedPreview}`}
           </p>
 
+          {/* Error Message */}
           {error && (
-            <div style={{ background: "#fef2f2", color: "#b91c1c", padding: "10px 14px", borderRadius: 10, fontSize: 13, marginBottom: 16 }}>
+            <div className="bg-red-50 text-red-700 px-3.5 py-2.5 rounded-lg text-[13px] mb-4">
               {error}
             </div>
           )}
 
+          {/* Forms */}
           {step === "request" ? (
-            <form onSubmit={handleRequest} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <form onSubmit={handleRequest} className="flex flex-col gap-4.5 space-y-4">
               <div>
-                <label style={inputLabel}>Phone number</label>
-                <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #e2e8f0", borderRadius: 12, overflow: "hidden" }}>
-                  <FiPhone style={{ color: "#9ca3af", marginLeft: 12, flexShrink: 0 }} size={15} />
+                <label className="block text-[13px] font-semibold text-gray-700 mb-1.5">Phone number</label>
+                <div className="flex items-center border-[1.5px] border-slate-200 rounded-xl overflow-hidden focus-within:border-[#00863F] focus-within:ring-1 focus-within:ring-[#00863F] transition-all">
+                  <FiPhone className="text-gray-400 ml-3 shrink-0" size={15} />
                   <input
                     type="tel"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value.replace(/\D/g, ""))}
                     placeholder="08012345678"
                     required
-                    style={{ flex: 1, border: "none", outline: "none", padding: "12px 14px", fontSize: 14, color: "#374151", background: "transparent" }}
+                    className="flex-1 border-none outline-none px-3.5 py-3 text-sm text-gray-700 bg-transparent"
                   />
                 </div>
               </div>
               <button
                 type="submit"
                 disabled={loading}
-                style={{
-                  background: loading ? "#6CC04A" : "#00863F",
-                  color: "#fff", border: "none", borderRadius: 12, padding: "14px",
-                  fontSize: 15, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
-                }}
+                className={`w-full text-white rounded-xl py-3.5 text-[15px] font-bold transition-colors ${
+                  loading ? "bg-[#6CC04A] cursor-not-allowed" : "bg-[#00863F] hover:bg-[#007034] cursor-pointer"
+                }`}
               >
                 {loading ? "Sending…" : "Send reset code"}
               </button>
             </form>
           ) : (
-            <form onSubmit={handleVerify} style={{ display: "flex", flexDirection: "column", gap: 18 }}>
+            <form onSubmit={handleVerify} className="flex flex-col gap-4.5 space-y-5">
               <div>
-                <label style={inputLabel}>Reset code</label>
-                <div style={{ display: "flex", alignItems: "center", border: "1.5px solid #e2e8f0", borderRadius: 12, overflow: "hidden" }}>
-                  <FiLock style={{ color: "#9ca3af", marginLeft: 12, flexShrink: 0 }} size={15} />
-                  <input
-                    type="password"
-                    inputMode="numeric"
-                    value={pin}
-                    onChange={(e) => setPin(e.target.value.replace(/\D/g, "").slice(0, 4))}
-                    placeholder="4-digit code"
-                    maxLength={4}
-                    required
-                    style={{ flex: 1, border: "none", outline: "none", padding: "12px 14px", fontSize: 18, letterSpacing: "0.2em", color: "#111827", background: "transparent" }}
-                  />
-                </div>
+                <label className="block text-[13px] font-semibold text-gray-700 mb-2">6-digit reset code</label>
+                <OtpInput value={pin} onChange={setPin} />
               </div>
-              <button
-                type="submit"
-                disabled={loading}
-                style={{
-                  background: loading ? "#6CC04A" : "#00863F",
-                  color: "#fff", border: "none", borderRadius: 12, padding: "14px",
-                  fontSize: 15, fontWeight: 700, cursor: loading ? "not-allowed" : "pointer",
-                }}
-              >
-                {loading ? "Resetting…" : "Reset PIN"}
-              </button>
-              <button
-                type="button"
-                onClick={() => { setStep("request"); setPin(""); setError(""); }}
-                style={{ background: "none", border: "none", color: "#00863F", fontSize: 13, fontWeight: 600, cursor: "pointer" }}
-              >
-                Use a different number
-              </button>
+              <div className="space-y-3">
+                <button
+                  type="submit"
+                  disabled={loading || pin.length < 6}
+                  className={`w-full text-white rounded-xl py-3.5 text-[15px] font-bold transition-colors ${
+                    loading || pin.length < 6 ? "bg-[#6CC04A] opacity-70 cursor-not-allowed" : "bg-[#00863F] hover:bg-[#007034] cursor-pointer"
+                  }`}
+                >
+                  {loading ? "Resetting…" : "Reset PIN"}
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setStep("request");
+                    setPin("");
+                    setError("");
+                  }}
+                  className="w-full bg-transparent border-none text-[#00863F] text-[13px] font-semibold cursor-pointer hover:underline"
+                >
+                  Use a different number
+                </button>
+              </div>
             </form>
           )}
 
-          <div style={{ marginTop: 24, textAlign: "center" }}>
-            <Link href="/login" style={{ display: "inline-flex", alignItems: "center", gap: 6, fontSize: 13, color: "#6b7280", textDecoration: "none" }}>
+          {/* Back to login */}
+          <div className="mt-6 text-center">
+            <Link
+              href="/login"
+              className="inline-flex items-center gap-1.5 text-[13px] text-gray-500 no-underline hover:text-gray-800 transition-colors"
+            >
               <FiArrowLeft size={14} /> Back to sign in
             </Link>
           </div>
