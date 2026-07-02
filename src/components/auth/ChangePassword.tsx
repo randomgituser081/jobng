@@ -86,6 +86,7 @@ export default function ChangePassword() {
           Your PIN has been successfully updated. You can now use it to log in.
         </p>
         <button 
+        type="button"
           onClick={() => window.location.href = '/login'} 
           className="jj-btn jj-btn--gold jj-login-submit"
         >

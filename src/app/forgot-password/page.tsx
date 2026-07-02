@@ -110,7 +110,6 @@ export default function ForgotPasswordPage() {
     setError("");
     const normalized = normalizeNigerianPhone(phone);
     
-    // Updated to strictly enforce 6 digits
     if (!/^\d{6}$/.test(pin)) {
       setError("Enter the 6-digit code from SMS.");
       return;
@@ -121,7 +120,7 @@ export default function ForgotPasswordPage() {
       const res = await fetch("/api/auth/reset-password", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phone: normalized, pin }),
+        body: JSON.stringify({ phone_number: normalized, pin: pin }),
       });
       const data = await res.json();
       if (!res.ok || !data.ok) {

@@ -51,10 +51,22 @@ export function extractToken(data: Record<string, unknown>): string | null {
 }
 
 async function parseJson(res: Response): Promise<Record<string, unknown>> {
+  const text = await res.text(); // Get raw response first
+  
   try {
-    return (await res.json()) as Record<string, unknown>;
+    // Attempt to parse as JSON
+    const data = JSON.parse(text);
+    
+    // If it's a plain string, wrap it in a 'message' property
+    if (typeof data === "string") {
+      return { message: data };
+    }
+    
+    // If it's an object, return it as is
+    return data as Record<string, unknown>;
   } catch {
-    return {};
+    // If it's not JSON, assume it's a plain text error message
+    return { message: text || res.statusText || "An unexpected error occurred" };
   }
 }
 
@@ -95,19 +107,15 @@ export async function updatePassword({
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      number,
-      pin,
-      confirm_pin,
-    }),
+    body: JSON.stringify({ number, pin, confirm_pin }),
   });
 
   const data = await parseJson(res);
-  
-  return { 
-    ok: res.ok, 
-    status: res.status, 
-    message: data.message as string
+  console.log(data)
+  return {
+    ok: res.ok,
+    status: res.status,
+    message: extractError(data)
   };
 }
 

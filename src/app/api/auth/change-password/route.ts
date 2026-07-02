@@ -18,6 +18,8 @@ export async function POST(request: Request) {
     const pin = body.pin?.trim();
     const confirm_pin = body.confirm_pin?.trim();
 
+    console.log("Sanitized Payload:", { number, pin, confirm_pin });
+
     // 2. Basic Validation
     if (!number || !pin || !confirm_pin) {
       return NextResponse.json(
@@ -53,7 +55,7 @@ export async function POST(request: Request) {
       if (result.message) {
         return NextResponse.json(
           { message: result.message },
-          { status: 400 }
+          { status: result.status || 400 }
         );
       }
 
