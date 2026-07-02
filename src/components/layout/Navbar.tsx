@@ -93,7 +93,8 @@ export default function Navbar() {
     <>
       <header className="fixed top-0 left-0 right-0 z-50 h-(--spacing-nav-height) flex items-center bg-surface backdrop-blur-md shadow-[0_1px_0_rgba(15,23,42,0.08)]">
         <div className="container-xl flex items-center justify-between gap-4 w-full">
-          <Logo variant="dark" size="md" />
+          {isAuthenticated ? <Logo variant="dark" size="md" href="/jobs"/> : <Logo variant="dark" size="md" />}
+          
 
           <nav className="hidden lg:flex items-center gap-1">
             {navLinks.map((link) => (
