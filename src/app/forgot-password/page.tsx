@@ -6,7 +6,7 @@ import Logo from "@/components/brand/Logo";
 import { OtpInput } from "@/components/auth/OTPInput";
 
 const PIN_LENGTH = 4;
-export const OTP_LENGTH = 6;
+const OTP_LENGTH = 6;
 
 const countryCodes = [
   { code: "+234", flag: "🇳🇬", name: "NG" },

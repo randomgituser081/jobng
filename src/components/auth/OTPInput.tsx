@@ -1,5 +1,7 @@
-import { OTP_LENGTH } from "@/app/forgot-password/page";
+
 import { useRef } from "react";
+
+const OTP_LENGTH = 6;
 
 export function OtpInput({
   value,
