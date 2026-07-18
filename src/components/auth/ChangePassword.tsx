@@ -1,9 +1,9 @@
 "use client";
 import React, { useState } from "react";
+import { authHeaders } from "@/lib/auth-client";
 
 export default function ChangePassword() {
   const [formData, setFormData] = useState({
-    number: "",
     old_pin: "",
     pin: "",
     confirm_pin: "",
@@ -15,28 +15,26 @@ export default function ChangePassword() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    // Clear errors when the user starts typing again
     if (error) setError("");
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic frontend validation
-    if (!formData.number || !formData.old_pin || !formData.pin || !formData.confirm_pin) {
+    if (!formData.old_pin || !formData.pin || !formData.confirm_pin) {
       setError("Please fill out all fields.");
       return;
     }
-    if (formData.old_pin.length < 4) {
+    if (!/^\d{4}$/.test(formData.old_pin)) {
       setError("Enter your current 4-digit PIN.");
+      return;
+    }
+    if (!/^\d{4}$/.test(formData.pin)) {
+      setError("New PIN must be exactly 4 digits.");
       return;
     }
     if (formData.pin !== formData.confirm_pin) {
       setError("PINs do not match. Please try again.");
-      return;
-    }
-    if (formData.pin.length < 4) {
-      setError("PIN must be at least 4 digits.");
       return;
     }
     if (formData.pin === formData.old_pin) {
@@ -52,38 +50,34 @@ export default function ChangePassword() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          ...authHeaders(), // attaches the Bearer token so the backend knows which user this is
         },
         body: JSON.stringify({
-          number: formData.number,
           old_pin: formData.old_pin,
           pin: formData.pin,
-          confirm_pin: formData.confirm_pin,
         }),
       });
 
+      const data = await response.json().catch(() => ({}));
+
       if (response.ok) {
         setSuccess(true);
-        // Optional: clear form
-        setFormData({ number: "", old_pin: "", pin: "", confirm_pin: "" });
+        setFormData({ old_pin: "", pin: "", confirm_pin: "" });
       } else {
-        // Handle 400 Bad Request or other errors
-        const data = await response.json().catch(() => ({}));
-        setError(data.message || "Failed to change password. Please check your details.");
+        setError(data.error || data.message || "Failed to change password. Please check your details.");
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       setError("A network error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  // ── SUCCESS STATE ──────────────────────────────────────
   if (success) {
     return (
       <div className="jj-login-card--success animate-fade-in-up">
         <div className="jj-login-success-icon">
-          {/* Simple SVG checkmark */}
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="20 6 9 17 4 12" />
           </svg>
@@ -92,9 +86,9 @@ export default function ChangePassword() {
         <p className="jj-login-success-sub">
           Your PIN has been successfully updated. You can now use it to log in.
         </p>
-        <button 
-        type="button"
-          onClick={() => window.location.href = '/login'} 
+        <button
+          type="button"
+          onClick={() => (window.location.href = "/login")}
           className="jj-btn jj-btn--gold jj-login-submit"
         >
           Return to Login
@@ -103,45 +97,16 @@ export default function ChangePassword() {
     );
   }
 
-  // ── FORM STATE ─────────────────────────────────────────
   return (
     <div className="jj-login-form-wrap mx-auto animate-fade-in-up">
       <div className="jj-login-form-head">
         <h2>Change PIN</h2>
         <p>Update the access PIN for your JustJobNG account.</p>
       </div>
-      {error && (
-        <div className="jj-login-error animate-fade-in-up">
-          {error}
-        </div>
-      )}
+      {error && <div className="jj-login-error animate-fade-in-up">{error}</div>}
       <form onSubmit={handleSubmit} className="jj-login-form">
-        {/* Phone Number Field */}
         <div className="jj-login-form-group">
-          <label htmlFor="number" className="jj-login-label">
-            Phone Number
-          </label>
-          <div className="jj-login-field">
-            <div className="jj-login-field__input-wrap">
-              <input
-                id="number"
-                name="number"
-                type="tel"
-                placeholder="e.g. 08012345678"
-                value={formData.number}
-                onChange={handleChange}
-                className="jj-login-field__input"
-                disabled={loading}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Old PIN Field */}
-        <div className="jj-login-form-group">
-          <label htmlFor="old_pin" className="jj-login-label">
-            Current PIN
-          </label>
+          <label htmlFor="old_pin" className="jj-login-label">Current PIN</label>
           <div className="jj-login-field jj-login-field--pin">
             <div className="jj-login-field__input-wrap">
               <input
@@ -160,11 +125,8 @@ export default function ChangePassword() {
           </div>
         </div>
 
-        {/* New PIN Field */}
         <div className="jj-login-form-group">
-          <label htmlFor="pin" className="jj-login-label">
-            New PIN
-          </label>
+          <label htmlFor="pin" className="jj-login-label">New PIN</label>
           <div className="jj-login-field jj-login-field--pin">
             <div className="jj-login-field__input-wrap">
               <input
@@ -183,11 +145,8 @@ export default function ChangePassword() {
           </div>
         </div>
 
-        {/* Confirm PIN Field */}
         <div className="jj-login-form-group">
-          <label htmlFor="confirm_pin" className="jj-login-label">
-            Confirm New PIN
-          </label>
+          <label htmlFor="confirm_pin" className="jj-login-label">Confirm New PIN</label>
           <div className="jj-login-field jj-login-field--pin">
             <div className="jj-login-field__input-wrap">
               <input
@@ -206,17 +165,8 @@ export default function ChangePassword() {
           </div>
         </div>
 
-        {/* Submit Button */}
-        <button
-          type="submit"
-          disabled={loading}
-          className="jj-btn jj-btn--gold jj-login-submit mt-4"
-        >
-          {loading ? (
-            <span className="jj-login-spinner"></span>
-          ) : (
-            "Update PIN"
-          )}
+        <button type="submit" disabled={loading} className="jj-btn jj-btn--gold jj-login-submit mt-4">
+          {loading ? <span className="jj-login-spinner"></span> : "Update PIN"}
         </button>
       </form>
     </div>

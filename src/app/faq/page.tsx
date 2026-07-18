@@ -9,7 +9,7 @@ const faqData = [
     category: "For Job Seekers",
     items: [
       { q: "How do I apply for jobs via USSD?", a: "Dial *7098# on your MTN line, select 'Find Jobs', and follow the prompts. You can browse by category or location and submit your profile directly." },
-      { q: "Is the USSD service free?", a: "Browsing job titles is free. To view full details or apply, you need an active subscription which costs ₦100/week or ₦300/month." },
+      { q: "Is the USSD service free?", a: "Browsing job titles is free. To view full details or apply, you need an active subscription which costs ₦100/day." },
       { q: "Do I need a CV to apply?", a: "For USSD applications, we use your built-in profile as your CV. For website applications, some employers may request an external CV upload." },
     ]
   },
@@ -119,7 +119,7 @@ export default function FAQPage() {
           <div className="text-center py-16">
             <div className="text-5xl mb-4">🔍</div>
             <h3 className="text-xl font-extrabold text-[var(--ink)] mb-2">No results found</h3>
-            <p className="text-[var(--text-muted)]">We couldn't find any questions matching "{search}"</p>
+            <p className="text-[var(--text-muted)]">We couldn&apos;t find any questions matching &quot;{search}&quot;</p>
           </div>
         ) : (
           filteredData.map((section, idx) => (

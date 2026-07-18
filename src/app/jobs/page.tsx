@@ -62,9 +62,7 @@ function JobsContent() {
     fetchJobs();
   }, [fetchJobs]);
 
-  const categories = Array.from(
-    new Set(jobs.map((j) => j.category).filter(Boolean) as string[])
-  ).sort();
+  const CATEGORY_OPTIONS = ["Remote", "On-site", "Hybrid", "Full-time", "Part-time"];
 
   return (
     <div className="jj-jobs-page">
@@ -95,7 +93,7 @@ function JobsContent() {
                 </button>
               )}
             </div>
-            {categories.length > 0 && (
+            {CATEGORY_OPTIONS.length > 0 && (
               <div className="jj-jobs-search" style={{ flex: "0 1 200px" }}>
                 <FiGrid size={14} style={{ color: "var(--gold-hover)", flexShrink: 0 }} />
                 <select
@@ -105,7 +103,7 @@ function JobsContent() {
                   style={{ flex: 1, border: "none", outline: "none", background: "transparent", fontSize: "0.875rem", color: "var(--text)", cursor: "pointer" }}
                 >
                   <option value="">All categories</option>
-                  {categories.map((c) => (
+                  {CATEGORY_OPTIONS.map((c) => (
                     <option key={c} value={c}>{c}</option>
                   ))}
                 </select>

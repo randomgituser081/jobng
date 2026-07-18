@@ -9,6 +9,8 @@ export interface ApiJob {
   company_website: string | null;
   category: string | null;
   description: string | null;
+  is_active?: boolean;
+  status?: string; 
 }
 
 export interface PagedJobsResponse {
@@ -69,6 +71,20 @@ async function parseJson(res: Response): Promise<Record<string, unknown>> {
     return { message: text || res.statusText || "An unexpected error occurred" };
   }
 }
+export async function registerUser(body: {
+  // name: string;
+  number: string;
+  pin: string;
+  confirm_pin: string;
+}): Promise<ApiResult> {
+  const res = await fetch(`${API_BASE_URL}/api/justjob/create/user/`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  console.log(res.status)
+  return { ok: res.ok, status: res.status, data: await parseJson(res) };
+}
 
 export async function loginUser(body: {
   number: string;
@@ -105,13 +121,16 @@ export async function verifyOtp(body: {
   return { ok: res.ok, status: res.status, data: await parseJson(res) };
 }
 
-export async function changePassword(body: {
-  new_pin: string;
-  old_pin: string;
-}): Promise<ApiResult> {
+export async function changePassword(
+  body: { new_pin: string; old_pin: string },
+  token?: string
+): Promise<ApiResult> {
+  const headers: Record<string, string> = { "Content-Type": "application/json" };
+  if (token) headers.Authorization = `Bearer ${token}`;
+
   const res = await fetch(`${API_BASE_URL}/api/justjob/change/password/`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers,
     body: JSON.stringify(body),
   });
   return { ok: res.ok, status: res.status, data: await parseJson(res) };
