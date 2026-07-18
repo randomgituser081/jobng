@@ -3,6 +3,10 @@ import { FiBriefcase, FiCalendar, FiExternalLink, FiArrowUpRight } from "react-i
 import type { ApiJob } from "@/lib/justjobApi";
 import { stripHtml } from "@/lib/html";
 
+// Known valid work-type values — anything outside this set (e.g. stray
+// placeholder strings like "feature" from the backend) is treated as unset.
+const VALID_WORK_TYPES = ["Remote", "On-site", "Hybrid", "Full-time", "Part-time"];
+
 function formatDate(iso: string) {
   try {
     return new Date(iso).toLocaleDateString("en-NG", {
@@ -19,6 +23,14 @@ function companyInitial(name: string) {
   return name.trim().charAt(0).toUpperCase() || "J";
 }
 
+function resolveWorkType(category: string | null): string {
+  if (!category) return "Not specified";
+  const match = VALID_WORK_TYPES.find(
+    (type) => type.toLowerCase() === category.trim().toLowerCase()
+  );
+  return match ?? "Not specified";
+}
+
 interface JobCardProps {
   job: ApiJob;
   variant?: "list" | "grid";
@@ -26,9 +38,8 @@ interface JobCardProps {
 
 export default function JobCard({ job, variant = "list" }: JobCardProps) {
   const title = job.job_title ?? "Untitled role";
-  const category = job.category ?? "General";
+  const workType = resolveWorkType(job.category);
   const plainDescription = stripHtml(job.description);
-
   const avatar = (
     <div className="jj-job-card__avatar">{companyInitial(job.company_name)}</div>
   );
@@ -46,7 +57,7 @@ export default function JobCard({ job, variant = "list" }: JobCardProps) {
           </div>
         </div>
         <div className="jj-job-card__meta">
-          <span className="jj-pill"><FiBriefcase size={10} /> {category}</span>
+          <span className="jj-pill"><FiBriefcase size={10} /> {workType}</span>
           <span className="jj-job-card__date"><FiCalendar size={11} /> {formatDate(job.created_at)}</span>
         </div>
         {plainDescription && (
@@ -68,7 +79,7 @@ export default function JobCard({ job, variant = "list" }: JobCardProps) {
         </Link>
         <p className="jj-job-card__company">{job.company_name}</p>
         <div className="jj-job-card__meta">
-          <span className="jj-pill"><FiBriefcase size={10} /> {category}</span>
+          <span className="jj-pill"><FiBriefcase size={10} /> {workType}</span>
           <span className="jj-job-card__date"><FiCalendar size={11} /> {formatDate(job.created_at)}</span>
         </div>
         {plainDescription && (
