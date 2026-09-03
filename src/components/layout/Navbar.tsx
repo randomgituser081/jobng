@@ -27,6 +27,7 @@ const navLinks = [
   { label: "Home", href: "/", icon: FiHome },
   { label: "Find Jobs", href: "/jobs", icon: FiBriefcase },
   { label: "About Us", href: "/about", icon: FiInfo },
+  {label: "Contact", href: "/contact", icon: FiUserPlus },
 ];
 
 function formatPhoneNumber(phone?: string | null) {
