@@ -12,8 +12,8 @@ export async function POST(req: Request) {
 
     const customerId = formData.get("customerId") as string;
     const platform = formData.get("platform") as string;
-    const timestamp = formData.get("timestamp") as string;
-    const device = formData.get("device") as string;
+    // const timestamp = formData.get("timestamp") as string;
+    // const device = formData.get("device") as string;
 
     // 3. Server-Side Validation Rules
     if (!title || title.trim() === "") {
@@ -60,7 +60,7 @@ export async function POST(req: Request) {
        * In a real app, you would stream `attachment.stream()` or convert to Buffer
        * and push to AWS S3, Cloudinary, etc., returning the file URL.
        */
-      const buffer = await attachment.arrayBuffer();
+      // const buffer = await attachment.arrayBuffer();
       // const s3UploadResult = await uploadToS3(buffer, attachment.name);
       // attachmentUrl = s3UploadResult.url;
 
