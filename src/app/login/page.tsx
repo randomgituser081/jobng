@@ -297,7 +297,7 @@ function LoginPageContent() {
             </form>
 
             <div className="jj-login-subscribe">
-              <p className="jj-login-subscribe__title">
+              <p className="text-gold! jj-login-subscribe__title">
                 Prefer USSD Registration?
               </p>
               <p className="jj-login-subscribe__text">

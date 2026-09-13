@@ -553,3 +553,41 @@ export async function fetchQuestionsFromApi(
     throw new Error("Unable to connect. Please check your internet connection.");
   }
 }
+
+export async function fetchCaptchaChallenge(userId: string) {
+  const res = await fetchWithAuth(`${API_BASE_URL}/recaptcha/cronjob?user_id=${encodeURIComponent(userId)}`, {
+    headers: {
+      accept: "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch CAPTCHA challenge");
+  }
+  return res.json();
+}
+
+export async function submitComplaint(payload: {
+  user_id: string;
+  names: string;
+  phone: string;
+  complaint: string;
+  service_route: string;
+  challenge_id: string;
+  captcha_answer: string;
+}) {
+  const res = await fetchWithAuth(`${API_BASE_URL}/complaint`, {
+    method: "POST",
+    headers: {
+      accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || errorData.detail || "Failed to submit complaint");
+  }
+  return res.json();
+}

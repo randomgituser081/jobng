@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 import { AuthProvider } from "@/context/AuthContext";
+import { AppleSplashScreens } from "@/components/AppleSplashScreens";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -21,18 +22,45 @@ const dmSans = DM_Sans({
 
 const siteUrl = "https://www.justjobng.online";
 
+export const viewport: Viewport = {
+  themeColor: "#0A0F1C",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1, // Prevents iOS from zooming in when focusing input fields
+  userScalable: false, // Enforces native-app feel
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
+  applicationName: "JustJobNG",
   title: {
     default: "JustJobNG – Find Your Next Job",
     template: "%s | JustJobNG",
   },
   description:
     "Nigeria's No. 1 job aggregator platform. Browse live listings, apply to top Jobs, and grow your career. Subscribe via *7098#.",
-  keywords: "jobs Nigeria, careers, employment, job search, JustJobNG, MTN jobs",
+  keywords: [
+    "jobs Nigeria",
+    "careers",
+    "employment",
+    "job search",
+    "JustJobNG",
+    "MTN jobs",
+  ],
+  authors: [{ name: "JustJobNG" }],
+  creator: "JustJobNG",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
   icons: {
     icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/favicon.svg", type: "image/svg+xml" }],
+    apple: [
+      { url: "/apple.png", sizes: "180x180", type: "image/png" }, // Essential for iOS Home Screen
+    ],
   },
   openGraph: {
     title: "JustJobNG – Find Your Next Job in Nigeria",
@@ -59,10 +87,17 @@ export const metadata: Metadata = {
       "Browse live listings, apply to top jobs, and grow your career. Subscribe via *7098#.",
     images: ["/og-image.png"],
   },
-};
-
-export const viewport: Viewport = {
-  themeColor: "#0A0F1C",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "JustJobNG",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  other: {
+    "apple-mobile-web-app-capable": "yes",
+  },
 };
 
 export default function RootLayout({
@@ -71,17 +106,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html 
-      lang="en" 
+    <html
+      lang="en"
       className={`${plusJakarta.variable} ${dmSans.variable} scroll-smooth`}
       suppressHydrationWarning
     >
       <body className="font-body antialiased min-h-screen flex flex-col bg-(--ink) text-(--surface)">
+        <AppleSplashScreens />
         <AuthProvider>
           <Navbar />
-          <main className="grow pt-(--spacing-nav-height)">
-            {children}
-          </main>
+          <main className="grow pt-(--spacing-nav-height)">{children}</main>
           <Footer />
         </AuthProvider>
       </body>
